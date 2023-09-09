@@ -12,7 +12,8 @@
     />
     <meta name="Architecte d'interieur" content="Author: Sophie Bluel" />
     <link rel="stylesheet" href="./assets/style.css" />
-    <script type="module" src="./assets/main.js"></script>
+    <script src="./assets/main.js" type="module"></script>
+    <script src="./assets/index.js" type="module"></script>
     <script
       src="https://kit.fontawesome.com/65e894b0c8.js"
       crossorigin="anonymous"
@@ -92,7 +93,7 @@
             <a href="#"><p class="alert">Supprimer la galerie</p></a>
           </div>
         </div>
-
+        <div class="modals-background"></div>
         <div class="modalAdd">
           <i class="modalAdd-arrow-left fa-solid fa-arrow-left fa-2xl"></i>
           <i class="modalAdd-xmark fa-solid fa-xmark fa-2xl"></i>
@@ -114,7 +115,7 @@
             <input type="text" name="title" id="title" required />
             <label for="select">Catégorie</label>
             <select name="select" id="select" required>
-              <option>Choisir une catégorie</option>
+              <option value="">Choisir une catégorie</option>
               <option value="1">Objets</option>
               <option value="2">Appartements</option>
               <option value="3">Hôtels & restaurants</option>

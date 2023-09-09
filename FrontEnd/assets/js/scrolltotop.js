@@ -1,21 +1,18 @@
-export function scrollToTop(boolean) {
-  if (boolean === true) {
-    const body = document.querySelector("body");
-    const iconDiv = document.createElement("div");
-    iconDiv.classList.add("scroll-to-top");
-    const icon = document.createElement("i");
-    icon.classList.add("fa-solid", "fa-arrow-up");
-    iconDiv.prepend(icon);
-    body.prepend(iconDiv);
-    listenToScroll();
-    backToTopOnClick();
-  }
+export function scrollToTop() {
+  const body = document.querySelector("body");
+  const iconDiv = document.createElement("div");
+  iconDiv.classList.add("scroll-to-top");
+  const icon = document.createElement("i");
+  icon.classList.add("fa-solid", "fa-arrow-up");
+  iconDiv.prepend(icon);
+  body.prepend(iconDiv);
+  listenToScroll();
+  backToTopOnClick();
 }
 
 function listenToScroll() {
   window.addEventListener("scroll", () => {
     const divScrollToTop = document.querySelector("div.scroll-to-top");
-    console.log(window.scrollY);
     if (window.scrollY >= 500) {
       divScrollToTop.style.opacity = "1";
     } else {

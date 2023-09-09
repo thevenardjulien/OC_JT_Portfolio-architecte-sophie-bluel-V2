@@ -1,5 +1,9 @@
 import { localhost, storedToken } from "./config.js";
-import { refreshGalleries, refreshModalGallery } from "./modals.js";
+import {
+  loginResponseError,
+  postResponse,
+  worksResponseError,
+} from "./functions/fetchFunctions.js";
 
 export async function fetchWorks() {
   try {
@@ -23,13 +27,6 @@ export async function fetchWorks() {
   }
 }
 
-function worksResponseError(message) {
-  const div = document.querySelector(".gallery-error");
-  console.log(div);
-  div.classList.add("alert");
-  div.innerHTML = message;
-}
-
 export async function fetchLogin(email, password) {
   try {
     const response = await fetch(`${localhost}/api/users/login`, {
@@ -46,8 +43,8 @@ export async function fetchLogin(email, password) {
       localStorage.setItem("token", responseLogin.token);
       window.location.replace("index.html");
     } else if (response.status === 401) {
-      console.error("E-mail ou mot de passe incorrect. (401)");
-      loginResponseError("E-mail ou mot de passe incorrect.");
+      console.error("Erreur dans l'identifiant ou le mot de passe (401)");
+      loginResponseError("Erreur dans l'identifiant ou le mot de passe");
     } else if (response.status === 404) {
       console.error("Utilisateur introuvable. (404)");
       loginResponseError("Utilisateur introuvable.");
@@ -56,15 +53,6 @@ export async function fetchLogin(email, password) {
     console.error("Impossible de se connecter.");
     loginResponseError("Impossible de se connecter.");
   }
-}
-
-function loginResponseError(message) {
-  const div = document.querySelector(".login-response");
-  div.innerHTML = "";
-  const p = document.createElement("p");
-  p.classList.add("alert");
-  p.innerHTML = message;
-  div.append(p);
 }
 
 export async function fetchPostWorks(formData) {
@@ -95,29 +83,6 @@ export async function fetchPostWorks(formData) {
   }
 }
 
-function postResponse(message, boolean) {
-  const modalAdd = document.querySelector(".modalAdd");
-  const p = document.createElement("p");
-  p.innerHTML = message;
-  modalAdd.append(p);
-  if (boolean === true) {
-    p.classList.add("info");
-  } else if (boolean === false) {
-    p.classList.add("alert");
-  }
-  setTimeout(() => {
-    returnToModal();
-  }, 1500);
-  refreshGalleries();
-}
-
-function returnToModal() {
-  const modal = document.querySelector(".modal");
-  const modalAdd = document.querySelector(".modalAdd");
-  modalAdd.style.display = "none";
-  modal.style.display = "block";
-}
-
 export async function fetchDeleteWorks(id) {
   try {
     const response = fetch(`${localhost}/api/works/${id}`, {
@@ -128,36 +93,14 @@ export async function fetchDeleteWorks(id) {
       },
       body: id,
     });
-    if (response.ok || response.status === 204) {
+    if (response.ok) {
       console.log("L'élément a bien été supprimé !");
-      // deleteResponse("L'élément a bien été supprimé !", true);
     } else if (response.status === 401) {
       console.log("Requête non autorisée.");
-      // deleteResponse(`Requête non autorisée.`, false);
     } else if (response.status === 500) {
-      console.log("Oops, désolé, une erreur inattendue est survenue!");
-      // deleteResponse(
-      //   "Oops, désolé, une erreur inattendue est survenue!",
-      //   false
-      // );
+      console.log("Une erreur inattendue est survenue!");
     }
   } catch (error) {
     console.error("Erreur: " + error.message);
   }
 }
-
-// function deleteResponse(message, boolean) {
-//   const modalResponse = document.querySelector(".modal-gallery-options");
-//   console.log(modalResponse);
-//   const p = document.createElement("p");
-//   p.innerHTML = message;
-//   console.log(p);
-//   modalResponse.prepend(p);
-//   if (boolean === true) {
-//     p.classList.add("info");
-//   } else if (boolean === false) {
-//     p.classList.add("alert");
-//   }
-//   console.log(p);
-//   refreshModalGallery();
-// }
